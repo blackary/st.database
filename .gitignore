@@ -1,0 +1,6 @@
+.streamlit/secrets.toml
+.streamlit/database.sqlite
+.direnv/
+.envrc
+.mypy_cache/
+__pycache__
