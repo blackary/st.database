@@ -45,19 +45,18 @@ for item in sorted(to_show, key=lambda x: x["created"]):
 
 "---"
 
-with st.expander("Add item"):
-    with st.form("add_item"):
-        text = st.text_input("Text")
-        if st.form_submit_button("Add"):
-            id = str(uuid.uuid4())
-            st.database[id] = {
-                "id": id,
-                "label": text,
-                "completed": False,
-                "created": datetime.now(),
-                "updated": datetime.now(),
-            }
-            st.experimental_rerun()
+with st.form("add_item"):
+    text = st.text_input("Add new item")
+    if st.form_submit_button("Add"):
+        id = str(uuid.uuid4())
+        st.database[id] = {
+            "id": id,
+            "label": text,
+            "completed": False,
+            "created": datetime.now(),
+            "updated": datetime.now(),
+        }
+        st.experimental_rerun()
 
 
 with st.expander("Show all details"):

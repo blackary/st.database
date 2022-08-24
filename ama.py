@@ -4,9 +4,14 @@ import streamlit_patches as st
 
 st.database = st.Database("ama")
 
-"# Clone of Fanilo's AMA"
-"## But with st.database!!"
+"""
+# Clone of Fanilo's AMA"
+Fanilo made an excellent tutorial of how to use Streamlit to create an AMA, with
+Firestore serving as the data backend. This is a clone of that app, but with
+st.database as the data backend.
+"""
 
+st.video("https://www.youtube.com/watch?v=8CjjVtHOT1E")
 
 with st.echo("below"):
     if "questions" not in st.database:

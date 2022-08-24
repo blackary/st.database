@@ -4,6 +4,8 @@ from sqlitedict import SqliteDict
 from streamlit import *
 from streamlit import _get_script_run_ctx
 
+from mpa_v2 import *
+
 logging.getLogger("sqlitedict").disabled = True
 
 
