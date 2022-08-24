@@ -1,2 +1,3 @@
 streamlit
 sqlitedict==1.7.0 # see https://github.com/RaRe-Technologies/sqlitedict/issues/152
+streamlit-ace
