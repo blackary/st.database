@@ -7,7 +7,7 @@ import requests
 from streamlit import *
 from streamlit import __version__, _get_script_run_ctx, source_util
 from streamlit.commands.page_config import get_random_emoji
-from streamlit.scriptrunner.script_runner import (
+from streamlit.runtime.scriptrunner.script_runner import (
     LOGGER,
     SCRIPT_RUN_WITHOUT_ERRORS_KEY,
     ForwardMsg,
@@ -135,7 +135,7 @@ def _run_script(self, rerun_data: RerunData) -> None:
     # Reset DeltaGenerators, widgets, media files.
     in_memory_file_manager.clear_session_files()
 
-    main_script_path = self._session_data.main_script_path
+    main_script_path = self._main_script_path
     pages = source_util.get_pages(main_script_path)
     # Safe because pages will at least contain the app's main page.
     main_page_info = list(pages.values())[0]
@@ -264,7 +264,7 @@ def _run_script(self, rerun_data: RerunData) -> None:
         # assume is the main script directory.
         module.__dict__["__file__"] = script_path
 
-        with modified_sys_path(self._session_data), self._set_execing_flag():
+        with modified_sys_path(self._main_script_path), self._set_execing_flag():
             # Run callbacks for widgets whose values have changed.
             if rerun_data.widget_states is not None:
                 self._session_state.on_script_will_rerun(rerun_data.widget_states)

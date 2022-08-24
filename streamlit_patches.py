@@ -1,4 +1,5 @@
 import logging
+import sqlite3
 
 from sqlitedict import SqliteDict
 from streamlit import *
@@ -67,3 +68,11 @@ class Database:
 
 
 database = Database()
+
+
+def get_tables():
+    """Get the list of all the current sqlite tables"""
+    nested = sqlite3.connect(_DB_PATH).cursor().execute(
+        "SELECT name FROM sqlite_schema WHERE type='table'"
+    )
+    return [row[0] for row in nested]
