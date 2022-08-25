@@ -27,6 +27,13 @@ class Database:
             "autocommit": True,
         }
 
+    def __call__(self, tablename: str) -> "Database":
+        """
+        Allows for the syntax st.database(<table_name>)[<key>] to be used, if you want
+        to use a different table from the default one.
+        """
+        return Database(tablename)
+
     def __getitem__(self, key):
         with SqliteDict(**self.read_args) as db:
             return db[key]
