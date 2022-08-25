@@ -20,9 +20,9 @@ if st.session_state.get("logged_in_user", None):
         st.set_page_config(layout="wide")
     else:
         st.set_page_config(layout="centered")
-    if user["settings"].get("email"):
-        st.sidebar.write(f"Email: {user['settings']['email']}")
-        get_profile_pic(user["settings"]["email"])
+    email = user["settings"].get("email", user)
+    st.sidebar.write(f"Email: {user['settings']['email']}")
+    get_profile_pic(user["settings"]["email"])
 
     st.sidebar.write("Logged in as " + st.session_state["logged_in_user"])
 
