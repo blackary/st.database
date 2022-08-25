@@ -1,4 +1,18 @@
 import streamlit_patches as st
+import urllib
+import hashlib
+
+
+def get_profile_pic(email: str):
+    size = 100
+    gravatar_url = (
+        "https://www.gravatar.com/avatar/"
+        + hashlib.md5(email.encode()).hexdigest()
+        + "?"
+    )
+    gravatar_url += urllib.parse.urlencode({"s": str(size), "d": "robohash"})
+    st.sidebar.image(gravatar_url)
+
 
 if st.session_state.get("logged_in_user", None):
     user = st.database("user")[st.session_state["logged_in_user"]]
@@ -6,6 +20,10 @@ if st.session_state.get("logged_in_user", None):
         st.set_page_config(layout="wide")
     else:
         st.set_page_config(layout="centered")
+    if user["settings"].get("email"):
+        st.sidebar.write(f"Email: {user['settings']['email']}")
+        get_profile_pic(user["settings"]["email"])
+
     st.sidebar.write("Logged in as " + st.session_state["logged_in_user"])
 
     if st.sidebar.button("Logout"):
