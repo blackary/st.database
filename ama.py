@@ -11,7 +11,8 @@ Firestore serving as the data backend. This is a clone of that app, but with
 st.database as the data backend.
 """
 
-st.video("https://www.youtube.com/watch?v=8CjjVtHOT1E")
+with st.expander("See Fanilo's excellent tutorial"):
+    st.video("https://www.youtube.com/watch?v=8CjjVtHOT1E")
 
 with st.echo("below"):
     if "questions" not in st.database:

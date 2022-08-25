@@ -8,7 +8,7 @@ from streamlit_ace import st_ace
 st.database = st.Database("playground")
 
 DEFAULT_HASH_LENGTH = 6
-BASE_URL = "https://database.streamlitapp.com/playground"
+BASE_URL = "https://database.streamlitapp.com/Streamlit%20Playground"
 
 """
 # Streamlit Playground!

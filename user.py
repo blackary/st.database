@@ -1,5 +1,4 @@
 from hashlib import scrypt
-from typing import Callable
 
 import streamlit_patches as st
 
@@ -15,7 +14,11 @@ def hash_password(password: str) -> str:
 
 
 st.warning(
-    "This is a demo app, and nowhere near best practices for usernames and passwords."
+    (
+        "This is a demo app, and does not necessarily demonstrate best practices for "
+        "dealing with usernames and passwords."
+    ),
+    icon="⚠️",
 )
 
 if "logged_in_user" not in st.session_state:
@@ -57,6 +60,7 @@ def show_login():
                     st.experimental_rerun()
                 else:
                     st.error("Invalid username or password")
+
 
 if not st.session_state["logged_in_user"]:
     show_login()
