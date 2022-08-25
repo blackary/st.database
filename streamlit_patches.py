@@ -1,4 +1,7 @@
 import logging
+from datetime import date, datetime
+from functools import wraps
+from typing import Any, Callable
 
 from sqlitedict import SqliteDict
 from streamlit import *
@@ -65,3 +68,53 @@ class Database:
 
 
 database = Database()
+
+
+def widget_logger(widget: Callable, value_type: type = None, default_value: Any = None):
+    @wraps(widget)
+    def wrapper(label: str, *args, **kwargs) -> Any:
+        """
+        Wrapps a streamlit widget, adding a new optional parameter `widget_logger`. If it is
+        not True, then this simply returns the standard version of the widget
+
+        If widget_logger=True, add an event in our events table with the label, value,
+        and timestamp on change
+        """
+        try:
+            widget_logger = kwargs.pop("widget_logger", False)
+            if widget_logger == False:
+                raise KeyError
+        except KeyError:
+            return widget(label, *args, **kwargs)
+
+        # Derive widget class from string representation of widget
+        # e.g. "<bound method CheckboxMixin.checkbox of..." -> "checkbox"
+        widget_type = str(widget).split("Mixin.")[1].split()[0]
+
+        # Make key that will be used in both session state and url param
+        label = f"{widget_type}_{label}".replace(" ", "_").lower()
+
+        def on_change():
+            print("this is on the change")
+
+        kwargs["on_change"] = on_change
+        print(
+            f"your widget, called {label} and of the type {widget_type} was rendered at {datetime.now()}"
+        )
+
+        new_value = widget(label, widget_type, *args, **kwargs)
+
+        return new_value
+
+    return wrapper
+
+
+checkbox = widget_logger(checkbox, bool, False)
+radio = widget_logger(radio, int, 0)
+text_input = widget_logger(text_input, str, "")
+text_area = widget_logger(text_area, str, "")
+number_input = widget_logger(number_input, float)
+slider = widget_logger(slider)
+date_input = widget_logger(date_input, date)
+selectbox = widget_logger(selectbox, int, 0)
+multiselect = widget_logger(multiselect, list)

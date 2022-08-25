@@ -12,6 +12,11 @@ df = pd.DataFrame(
     }
 )
 
+variable_slider = st.slider("hey", 1, 10)
+
+st.file_uploader("hey upload the file")
+
+st.write(variable_slider)
 
 start = time()
 st.database["df"] = df
