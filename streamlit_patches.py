@@ -1,4 +1,5 @@
 import logging
+import sqlite3
 from datetime import date, datetime
 from functools import wraps
 from typing import Any, Callable
@@ -92,17 +93,27 @@ def widget_logger(widget: Callable, value_type: type = None, default_value: Any 
         widget_type = str(widget).split("Mixin.")[1].split()[0]
 
         # Make key that will be used in both session state and url param
-        label = f"{widget_type}_{label}".replace(" ", "_").lower()
+        label_identifier = f"{widget_type}_{label}".replace(" ", "_").lower()
 
-        def on_change():
-            print("this is on the change")
-
-        kwargs["on_change"] = on_change
+        unix_timestamp = datetime.timestamp(datetime.now()) * 1000
         print(
-            f"your widget, called {label} and of the type {widget_type} was rendered at {datetime.now()}"
+            f"your widget, called {label_identifier} and of the type {widget_type} was rendered at {datetime.now()}"
         )
 
-        new_value = widget(label, widget_type, *args, **kwargs)
+        # add the label, widget, time to the db
+        con = sqlite3.connect(_DB_PATH)
+        cur = con.cursor()
+        cur.execute("CREATE TABLE IF NOT EXISTS events(label, widget_type, time)")
+        cur.execute(
+            """
+            INSERT INTO events(label, widget_type, time) VALUES (?, ?, ?)
+        """,
+            (label_identifier, widget_type, unix_timestamp),
+        )
+        print(cur.execute("SELECT * FROM events LIMIT 10").fetchall())
+        con.commit()
+
+        new_value = widget(widget_type, key=label_identifier, *args, **kwargs)
 
         return new_value
 
