@@ -18,6 +18,10 @@ if submitted:
         table[favorite_animal] = 0
     table[favorite_animal] += 1
 
+if len(table) == 0:
+    st.write("Submit your favorite pet!")
+    st.stop()
+
 values = pd.DataFrame([{"name": name, "value": value} for name, value in table.items()])
 
 st.bar_chart(values, x="name", y="value")
