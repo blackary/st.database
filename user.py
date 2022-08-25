@@ -1,4 +1,5 @@
 from hashlib import scrypt
+from typing import Callable
 
 import streamlit_patches as st
 
@@ -13,19 +14,18 @@ def hash_password(password: str) -> str:
     ).hex()
 
 
-st.warning(
-    (
-        "This is a demo app, and does not necessarily demonstrate best practices for "
-        "dealing with usernames and passwords."
-    ),
-    icon="⚠️",
-)
-
 if "logged_in_user" not in st.session_state:
     st.session_state["logged_in_user"] = None
 
 
 def show_login():
+    st.warning(
+        (
+            "This is a demo app, and does not necessarily demonstrate best practices for "
+            "dealing with usernames and passwords."
+        ),
+        icon="⚠️",
+    )
     sign_in, create = st.tabs(["Sign into account", "Create account"])
     with create:
         with st.form("Create account"):
@@ -73,16 +73,29 @@ username = st.session_state["logged_in_user"]
 user = st.database[username]
 
 for key, value in user["settings"].items():
-    if value.strip():
+    if value != "":
         st.write(f"**{key.title()}**: {value}")
 
 with st.expander("Edit account"):
     with st.form("Edit account"):
-        settings = ["full name", "bio", "email", "website", "twitter", "github"]
+        settings = [
+            "full name",
+            "bio",
+            "email",
+            "website",
+            "twitter",
+            "github",
+            "wide mode",
+        ]
         for setting in settings:
-            input = st.text_input if setting != "bio" else st.text_area
-            s = input(f"Enter {setting}", value=user["settings"].get(setting, ""))  # type: ignore
-            if s.strip():
+            if setting == "bio":
+                input: Callable = st.text_area
+            elif setting == "wide mode":
+                input = st.checkbox
+            else:
+                input = st.text_input
+            s = input(f"{setting.title()}", value=user["settings"].get(setting, ""))  # type: ignore
+            if s != "":
                 user["settings"][setting] = s
 
         if st.form_submit_button("Save"):
