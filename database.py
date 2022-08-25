@@ -55,7 +55,8 @@ The data is only persistent locally, as it is saved to a local file. However,
  the server itself, you could use something like
  [litestream](https://litestream.io/guides/kubernetes/).
  Alternatively, we could provide a pluggable API that would allow people to bring their
- own database backend, but still use st.database.
+ own database backend (e.g. `supabase`, `firestore`, etc.), but still use the
+ st.database API.
 
 It seems like there will be natural solutions to do this depending on where the
 app is hosted (Snowflake, Community Cloud, etc.).

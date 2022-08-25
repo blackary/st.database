@@ -11,6 +11,9 @@ st.page("admin.py", "Admin", icon=":wrench:")
 
 if st.session_state.get("logged_in_user", None):
     st.sidebar.write("Logged in as " + st.session_state["logged_in_user"])
+    if st.sidebar.button("Logout"):
+        st.session_state["logged_in_user"] = None
+        st.experimental_rerun()
 else:
     st.sidebar.write("Not logged in")
     if st.sidebar.button("Go to login page"):
