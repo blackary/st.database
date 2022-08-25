@@ -100,18 +100,23 @@ def widget_logger(widget: Callable, value_type: type = None, default_value: Any 
             f"your widget, called {label_identifier} and of the type {widget_type} was rendered at {datetime.now()}"
         )
 
-        # add the label, widget, time to the db
-        con = sqlite3.connect(_DB_PATH)
-        cur = con.cursor()
-        cur.execute("CREATE TABLE IF NOT EXISTS events(label, widget_type, time)")
-        cur.execute(
+        def on_change():
+
             """
-            INSERT INTO events(label, widget_type, time) VALUES (?, ?, ?)
-        """,
-            (label_identifier, widget_type, unix_timestamp),
-        )
-        print(cur.execute("SELECT * FROM events LIMIT 10").fetchall())
-        con.commit()
+            st.database('table')[unix_timestamp] = dict(etc etc etc)
+            """
+            con = sqlite3.connect(_DB_PATH)
+            cur = con.cursor()
+            cur.execute("CREATE TABLE IF NOT EXISTS events(label, widget_type, time)")
+            cur.execute(
+                """
+                INSERT INTO events(label, widget_type, time) VALUES (?, ?, ?)
+            """,
+                (label_identifier, widget_type, unix_timestamp),
+            )
+            con.commit()
+
+        kwargs["on_change"] = on_change
 
         new_value = widget(widget_type, key=label_identifier, *args, **kwargs)
 
