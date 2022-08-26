@@ -26,6 +26,7 @@ st.bar_chart(df_labels, x="label", y="count")
 df["date"] = pd.to_datetime(df["time"], unit="ms").dt.date
 df["hour"] = pd.to_datetime(df["time"], unit="ms").dt.hour
 
+st.subheader("Hour of Day Graph")
 df_hours = df.groupby("hour").count()["label"].reset_index()
 df_hours.columns = ["hour_of_day", "count"]
 st.bar_chart(df_hours, x="hour_of_day", y="count")
