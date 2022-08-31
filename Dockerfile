@@ -25,7 +25,6 @@ COPY litestream.yml /etc/litestream.yml
 # Copy local code to the container image.
 COPY . ./
 RUN mkdir -p .streamlit
-RUN echo salt="$SALT" > .streamlit/secrets.toml
 
 # Run the web service on container startup. Here we use the gunicorn
 # webserver, with one worker process and 8 threads.
