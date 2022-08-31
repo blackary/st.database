@@ -1,6 +1,7 @@
-import streamlit_patches as st
-import urllib
 import hashlib
+import urllib
+
+import streamlit_patches as st
 
 
 def get_profile_pic(email: str):
@@ -21,8 +22,8 @@ if st.session_state.get("logged_in_user", None):
     else:
         st.set_page_config(layout="centered")
     email = user["settings"].get("email", user)
-    st.sidebar.write(f"Email: {user['settings']['email']}")
-    get_profile_pic(user["settings"]["email"])
+    st.sidebar.write(f"Email: {email}")
+    get_profile_pic(email)
 
     st.sidebar.write("Logged in as " + st.session_state["logged_in_user"])
 
