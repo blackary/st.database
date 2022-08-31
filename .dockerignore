@@ -4,3 +4,4 @@
 .streamlit/database.sqlite
 .streamlit/database.sqlite-shm
 .streamlit/database.sqlite-wal
+!.streamlit/secrets.toml
