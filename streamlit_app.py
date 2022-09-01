@@ -21,7 +21,7 @@ if st.session_state.get("logged_in_user", None):
         st.set_page_config(layout="wide")
     else:
         st.set_page_config(layout="centered")
-    email = user["settings"].get("email", user)
+    email = user["settings"].get("email", user["settings"]["username"])
     st.sidebar.write(f"Email: {email}")
     get_profile_pic(email)
 
