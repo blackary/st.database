@@ -3,7 +3,7 @@ import sqlite3
 
 from sqlitedict import SqliteDict
 from streamlit import *
-from streamlit import _get_script_run_ctx
+from streamlit.runtime.scriptrunner import get_script_run_ctx
 
 from mpa_v2 import *
 

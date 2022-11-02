@@ -2,8 +2,9 @@ import hashlib
 from time import sleep
 from urllib import parse
 
-import streamlit_patches as st
 from streamlit_ace import st_ace
+
+import streamlit_patches as st
 
 st.database = st.Database("playground")
 
@@ -25,7 +26,7 @@ sidebar.
 
 
 def expand_short_url():
-    ctx = st._get_script_run_ctx()
+    ctx = st.get_script_run_ctx()
     query = parse.parse_qs(ctx.query_string)
     if "q" not in query:
         return
@@ -71,7 +72,7 @@ def can_edit() -> bool:
     if st.session_state.get("logged_in_user", None) in ["blackary", "tylerjrichards"]:
         return True
 
-    ctx = st._get_script_run_ctx()
+    ctx = st.get_script_run_ctx()
     if ctx is None:
         return False
     query = parse.parse_qs(ctx.query_string)

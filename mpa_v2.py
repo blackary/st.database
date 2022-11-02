@@ -1,12 +1,13 @@
 import sys
 from pathlib import Path
 from time import sleep
-from typing import Callable, Optional, Union
+from typing import Any, Callable, Dict, Optional, Union
 
 import requests
 from streamlit import *
-from streamlit import __version__, _get_script_run_ctx, source_util
+from streamlit import __version__, runtime, source_util
 from streamlit.commands.page_config import get_random_emoji
+from streamlit.runtime.scriptrunner import get_script_run_ctx
 from streamlit.runtime.scriptrunner.script_runner import (
     LOGGER,
     SCRIPT_RUN_WITHOUT_ERRORS_KEY,
@@ -15,12 +16,12 @@ from streamlit.runtime.scriptrunner.script_runner import (
     RerunException,
     ScriptRunner,
     ScriptRunnerEvent,
+    StopException,
     _clean_problem_modules,
     _log_if_error,
     _new_module,
     config,
     handle_uncaught_app_exception,
-    in_memory_file_manager,
     magic,
     modified_sys_path,
 )
@@ -90,7 +91,7 @@ def page(
     if page_script_hash in page_config:
         return
 
-    ctx = _get_script_run_ctx()
+    ctx = get_script_run_ctx()
     if ctx is None:
         return
 
@@ -133,7 +134,7 @@ def _run_script(self, rerun_data: RerunData) -> None:
     LOGGER.debug("Running script %s", rerun_data)
 
     # Reset DeltaGenerators, widgets, media files.
-    in_memory_file_manager.clear_session_files()
+    runtime.get_instance().media_file_mgr.clear_session_refs()
 
     main_script_path = self._main_script_path
     pages = source_util.get_pages(main_script_path)
