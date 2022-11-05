@@ -1,3 +1,4 @@
+import os
 from hashlib import scrypt
 from typing import Callable
 
@@ -9,9 +10,11 @@ st.database = st.Database("user")
 
 
 def hash_password(password: str) -> str:
-    return scrypt(
-        password.encode(), salt=st.secrets["salt"].encode(), n=2**10, r=10, p=100
-    ).hex()
+    try:
+        salt = st.secrets["salt"]
+    except Exception:
+        salt = os.environ.get("salt")
+    return scrypt(password.encode(), salt=salt.encode(), n=2**10, r=10, p=100).hex()
 
 
 if "logged_in_user" not in st.session_state:

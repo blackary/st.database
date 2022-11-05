@@ -20,11 +20,13 @@ class Database:
             "filename": _DB_PATH,
             "tablename": self.table_name,
             "flag": "r",
+            "journal_mode": "WAL",
         }
         self.write_args = {
             "filename": _DB_PATH,
             "tablename": self.table_name,
             "autocommit": True,
+            "journal_mode": "WAL",
         }
 
     def __call__(self, tablename: str) -> "Database":

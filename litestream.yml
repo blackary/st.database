@@ -1,0 +1,4 @@
+dbs:
+  - path: .streamlit/database.sqlite
+    replicas:
+      - url: s3://streamlit-zcb/st-database/db

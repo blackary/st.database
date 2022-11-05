@@ -1,0 +1,6 @@
+.direnv/**/*
+.direnv
+.envrc
+.streamlit/database.sqlite
+.streamlit/database.sqlite-shm
+.streamlit/database.sqlite-wal
